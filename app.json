@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.expo-clerk-playground"
     },
     "android": {
       "adaptiveIcon": {
@@ -34,6 +35,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    }    
   }
 }
