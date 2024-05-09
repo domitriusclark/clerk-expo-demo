@@ -1,49 +1,79 @@
+import { useClerk, useSignIn } from "@clerk/clerk-expo";
+import { Link, Stack } from "expo-router";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import React from "react";
-import * as WebBrowser from "expo-web-browser";
-import { Text, View, Button } from "react-native";
-import { Link } from "expo-router";
-import { useOAuth } from "@clerk/clerk-expo";
+import { OAuthButtons } from "@/components/OAuthButtons";
 
-export const useWarmUpBrowser = () => {
-  React.useEffect(() => {
-    void WebBrowser.warmUpAsync();
-    return () => {
-      void WebBrowser.coolDownAsync();
-    };
-  }, []);
-};
+export default function Page() {
+  const { signIn, setActive, isLoaded } = useSignIn();
 
-WebBrowser.maybeCompleteAuthSession();
+  const [emailAddress, setEmailAddress] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-const SignInWithOAuth = () => {
-  // Warm up the android browser to improve UX
-  // https://docs.expo.dev/guides/authentication/#improving-user-experience
-  useWarmUpBrowser();
-
-  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
-
-  const onPress = React.useCallback(async () => {
-    try {
-      const { createdSessionId, signIn, signUp, setActive } =
-        await startOAuthFlow();
-
-      if (createdSessionId) {
-        setActive!({ session: createdSessionId });
-      } else {
-        // Use signIn or signUp for next steps such as MFA
-      }
-    } catch (err) {
-      console.error("OAuth error", err);
+  const onSignInPress = React.useCallback(async () => {
+    if (!isLoaded) {
+      return;
     }
-  }, []);
+
+    try {
+      const completeSignIn = await signIn.create({
+        identifier: emailAddress,
+        password,
+      });
+
+      await setActive({ session: completeSignIn.createdSessionId });
+    } catch (err: any) {}
+  }, [isLoaded, emailAddress, password]);
 
   return (
     <View>
-      <Link href="/">
-        <Text>Home</Text>
-      </Link>
-      <Button title="Sign in with Google" onPress={onPress} />
+      <Stack.Screen
+        options={{
+          title: "Sign In",
+        }}
+      />
+      <View>
+        <Link href="/">
+          <Text>Home</Text>
+        </Link>
+      </View>
+      <View>
+        <OAuthButtons />
+      </View>
+
+      <View>
+        <TextInput
+          autoCapitalize="none"
+          value={emailAddress}
+          placeholder="Email..."
+          placeholderTextColor="#000"
+          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+        />
+      </View>
+
+      <View>
+        <TextInput
+          value={password}
+          placeholder="Password..."
+          placeholderTextColor="#000"
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+        />
+      </View>
+
+      <TouchableOpacity onPress={onSignInPress}>
+        <Text>Sign in</Text>
+      </TouchableOpacity>
+
+      <View>
+        <Text>Have an account?</Text>
+
+        <Link href="/sign-up" asChild>
+          <TouchableOpacity>
+            <Text>Sign up</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
     </View>
   );
-};
-export default SignInWithOAuth;
+}

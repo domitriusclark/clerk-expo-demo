@@ -9,9 +9,14 @@ export default function Page() {
     <View>
       <SignedIn>{user.user?.firstName}</SignedIn>
       <SignedOut>
-        <Link href="/sign-in">
-          <Text>Sign In</Text>
-        </Link>
+        <View>
+          <Link href="/sign-in">
+            <Text>Sign In</Text>
+          </Link>
+          <Link href="/sign-up">
+            <Text>Sign Up</Text>
+          </Link>
+        </View>
       </SignedOut>
     </View>
   );
