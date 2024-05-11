@@ -1,5 +1,5 @@
 {
-  "name": "expo-clerk-playground",
+  "name": "clerk-expo-demo",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
