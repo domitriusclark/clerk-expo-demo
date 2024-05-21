@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-clerk-playground",
-    "slug": "expo-clerk-playground",
+    "name": "expo-clerk-demo",
+    "slug": "expo-clerk-demo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -27,11 +27,23 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      [
+        "expo-router",
+        {
+          "origin": "https://expo-web-example.vercel.app"
+        }
+      ]
+      
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/SpaceMono-Regular.ttf"]
+        }
+      ]      
     ],
     "experiments": {
       "typedRoutes": true

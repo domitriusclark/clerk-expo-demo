@@ -7,7 +7,13 @@ export default function Page() {
 
   return (
     <View>
-      <SignedIn>{user.user?.firstName}</SignedIn>
+      <SignedIn>
+        <Text>Welcome {user.user?.firstName}</Text>
+        <Link href="/dashboard">
+          <Text>Dashboard</Text>
+        </Link>
+      </SignedIn>
+
       <SignedOut>
         <View>
           <Link href="/sign-in">

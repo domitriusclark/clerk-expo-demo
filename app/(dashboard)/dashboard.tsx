@@ -1,19 +1,48 @@
-import { useAuth, useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser, Clerk, useSignIn } from "@clerk/clerk-expo";
 import React from "react";
 
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Stack } from "expo-router";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Link, Stack, useRouter, useLocalSearchParams } from "expo-router";
+import useImpersonation from "@/hooks/useImpersonation";
+import * as WebBrowser from "expo-web-browser";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function Page() {
-  const { getToken, signOut } = useAuth();
+  const { getToken, signOut, actor } = useAuth();
   const { user } = useUser();
   const [sessionToken, setSessionToken] = React.useState("");
+  const [impersonator, setImpersonator] = React.useState();
+  const params = useLocalSearchParams();
+
+  const router = useRouter();
+
+  const [actorToken] = useImpersonation(actor?.sub || undefined);
 
   const onSignOutPress = async () => {
     try {
-      await signOut();
+      await signOut(() => router.replace("/"));
     } catch (err: any) {}
   };
+
+  React.useEffect(() => {
+    if (typeof actor?.sub === "string") {
+      const getImpersonatedUser = async () => {
+        const res = await fetch(
+          `https://api.clerk.com/v1/users/${actor?.sub}`,
+          {
+            headers: {
+              Authorization: `Bearer ${await getToken()}`,
+            },
+          }
+        );
+        const data = await res.json();
+
+        setImpersonator(data);
+      };
+      getImpersonatedUser();
+    }
+  }, [actor, impersonator]);
 
   React.useEffect(() => {
     const scheduler = setInterval(async () => {
@@ -31,10 +60,27 @@ export default function Page() {
           title: "Dashboard",
         }}
       />
+      <Link href="/account">
+        <Text>Account</Text>
+      </Link>
       <Text style={styles.title}>Hello {user?.firstName}</Text>
       <TouchableOpacity onPress={onSignOutPress} style={styles.link}>
         <Text style={styles.linkText}>Sign out</Text>
       </TouchableOpacity>
+
+      {actorToken && (
+        <Button
+          title="Impersonate"
+          onPress={async () => {
+            if (typeof actorToken.url === "string") {
+              await WebBrowser.openAuthSessionAsync(
+                actorToken.url,
+                "/dashboard"
+              );
+            }
+          }}
+        />
+      )}
       <Text style={styles.token}>{sessionToken}</Text>
     </View>
   );
