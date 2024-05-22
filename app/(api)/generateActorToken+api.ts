@@ -1,8 +1,3 @@
-// user_id: "user_2dYLl8lKOwT0moWQCehalJGbv1f",
-// actor: {
-//  sub: "user_2WoCG4EvQZHegEd9ILoBsEO2kgm",
-// },
-
 export async function POST(request: Request) {
   const body: { user_id: string; actor: { sub: string } } =
     await request.json();
