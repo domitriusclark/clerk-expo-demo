@@ -28,14 +28,13 @@ export default function Page() {
   React.useEffect(() => {
     if (typeof actor?.sub === "string") {
       const getImpersonatedUser = async () => {
-        const res = await fetch(
-          `https://api.clerk.com/v1/users/${actor?.sub}`,
-          {
-            headers: {
-              Authorization: `Bearer ${await getToken()}`,
-            },
-          }
-        );
+        const res = await fetch(`/getImpersonatedUser`, {
+          method: "POST",
+          body: JSON.stringify({
+            impersonator_id: actor?.sub,
+          }),
+        });
+
         const data = await res.json();
 
         setImpersonator(data);

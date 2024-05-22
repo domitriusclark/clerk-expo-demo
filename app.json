@@ -34,7 +34,7 @@
       [
         "expo-router",
         {
-          "origin": "https://expo-web-example.vercel.app"
+          "origin": "https://clerk-expo-demo-git-add-more-examples-domitrius-clarks-projects.vercel.app/"
         }
       ],
       
