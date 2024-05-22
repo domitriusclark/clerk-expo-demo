@@ -36,7 +36,7 @@
         {
           "origin": "https://expo-web-example.vercel.app"
         }
-      ]
+      ],
       
       [
         "expo-font",
