@@ -1,5 +1,5 @@
-import { Stack } from "expo-router/stack";
+import { Stack } from "expo-router";
 
-export default function Layout() {
+export default function HomeLayout() {
   return <Stack />;
 }

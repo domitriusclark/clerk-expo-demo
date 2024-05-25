@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-type ActorToken = {
+type Actor = {
   object: string;
   id: string;
   status: "pending" | "accepted" | "revoked";
@@ -12,29 +12,32 @@ type ActorToken = {
   updated_at: Number;
 };
 
-export default function useImpersonation(sub: String | undefined) {
-  const [actorToken, setActorToken] = useState<ActorToken>();
+export default function useImpersonation(
+  actorId: string | undefined,
+  userId: string | undefined
+) {
+  const [actor, setActor] = useState<Actor>();
   useEffect(() => {
     async function generateAndSetToken() {
-      if (typeof sub !== "string") {
+      if (typeof actorId !== "string") {
         const res = await fetch("/generateActorToken", {
           method: "POST",
           body: JSON.stringify({
-            user_id: "user_2dYLl8lKOwT0moWQCehalJGbv1f",
+            user_id: "user_2aqE3TWuC03FDFTEpwXc2QySvqu", // this is the user ID of the use you're going to impersonate,
             actor: {
-              sub: "user_2WoCG4EvQZHegEd9ILoBsEO2kgm",
+              sub: "user_2WoCG4EvQZHegEd9ILoBsEO2kgm", // this is the ID of the impersonator,
             },
           }),
         });
 
         const data = await res.json();
 
-        setActorToken(data);
+        setActor(data);
       }
     }
 
     generateAndSetToken();
   }, []);
 
-  return [actorToken];
+  return actor;
 }

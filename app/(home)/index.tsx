@@ -3,12 +3,12 @@ import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 export default function Page() {
-  const user = useUser();
+  const { user } = useUser();
 
   return (
     <View>
       <SignedIn>
-        <Text>Welcome {user.user?.firstName}</Text>
+        <Text>Welcome {user?.firstName}</Text>
         <Link href="/dashboard">
           <Text>Dashboard</Text>
         </Link>
@@ -16,7 +16,7 @@ export default function Page() {
 
       <SignedOut>
         <View>
-          <Link href="/sign-in">
+          <Link href="/auth/sign-in">
             <Text>Sign In</Text>
           </Link>
           <Link href="/sign-up">

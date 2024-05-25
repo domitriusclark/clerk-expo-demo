@@ -34,16 +34,11 @@
       [
         "expo-router",
         {
+          "root": "./app",
           "origin": "https://clerk-expo-demo-git-add-more-examples-domitrius-clarks-projects.vercel.app/"
         }
-      ],
-      
-      [
-        "expo-font",
-        {
-          "fonts": ["./assets/fonts/SpaceMono-Regular.ttf"]
-        }
-      ]      
+      ]
+               
     ],
     "experiments": {
       "typedRoutes": true

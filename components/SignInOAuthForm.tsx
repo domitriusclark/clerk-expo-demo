@@ -1,43 +1,14 @@
 import { useSignIn } from "@clerk/clerk-expo";
-import { useLocalSearchParams, Link, useRouter } from "expo-router";
-import {
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Link } from "expo-router";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { OAuthButtons } from "@/components/OAuthButtons";
-import * as WebBrowser from "expo-web-browser";
-import * as Linking from "expo-linking";
 
 export default function SignInOAuthForm() {
-  const params = useLocalSearchParams();
-  const router = useRouter();
-
   const { signIn, setActive, isLoaded } = useSignIn();
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  const onImpersonation = React.useCallback(async () => {
-    if (!isLoaded) {
-      return;
-    }
-
-    try {
-      if (typeof params["__clerk_ticket"] === "string") {
-        const completeSignIn = await signIn.create({
-          strategy: "ticket",
-          ticket: params["__clerk_ticket"],
-        });
-        await setActive({ session: completeSignIn.createdSessionId });
-        return WebBrowser.dismissBrowser();
-      }
-    } catch (err: any) {}
-  }, [isLoaded, emailAddress, password]);
-
   const onSignInPress = React.useCallback(async () => {
     if (!isLoaded) {
       return;
@@ -52,22 +23,6 @@ export default function SignInOAuthForm() {
       await setActive({ session: completeSignIn.createdSessionId });
     } catch (err: any) {}
   }, [isLoaded, emailAddress, password]);
-
-  if (Platform.OS === "web" && params["__clerk_ticket"]) {
-    return (
-      <View>
-        <View>
-          <Link href="/">
-            <Text>Logging impersonator in</Text>
-          </Link>
-        </View>
-
-        <TouchableOpacity onPress={onImpersonation}>
-          <Text>Sign in</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
 
   return (
     <View>
