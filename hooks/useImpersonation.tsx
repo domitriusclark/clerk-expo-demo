@@ -23,9 +23,9 @@ export default function useImpersonation(
         const res = await fetch("/generateActorToken", {
           method: "POST",
           body: JSON.stringify({
-            user_id: "user_2aqE3TWuC03FDFTEpwXc2QySvqu", // this is the user ID of the use you're going to impersonate,
+            user_id: userId, // this is the user ID of the use you're going to impersonate,
             actor: {
-              sub: "user_2WoCG4EvQZHegEd9ILoBsEO2kgm", // this is the ID of the impersonator,
+              sub: actorId, // this is the ID of the impersonator,
             },
           }),
         });
