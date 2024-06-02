@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-type Actor = {
+export type Actor = {
   object: string;
   id: string;
   status: "pending" | "accepted" | "revoked";

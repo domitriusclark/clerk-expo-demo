@@ -4,20 +4,85 @@ import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Link, useRouter } from "expo-router";
 
 import { useAuth, useUser, useSignIn, useSessionList } from "@clerk/clerk-expo";
-import useImpersonation from "@/hooks/useImpersonation";
 import { UserDataJSON } from "@clerk/types";
 import * as Linking from "expo-linking";
 
-export default function Page() {
-  const { signOut, actor } = useAuth();
-  const { isLoaded, signIn, setActive } = useSignIn();
-  const { user } = useUser();
-  const { sessions } = useSessionList();
+export type Actor = {
+  object: string;
+  id: string;
+  status: "pending" | "accepted" | "revoked";
+  user_id: string;
+  actor: object;
+  token: string | null;
+  url: string | null;
+  created_at: Number;
+  updated_at: Number;
+};
 
-  const actorRes = useImpersonation(actor?.sub || undefined, user?.id);
+function useImpersonation(
+  actorId: string | undefined,
+  userId: string | undefined
+) {
+  const [actor, setActor] = React.useState<Actor>();
+  React.useEffect(() => {
+    async function generateAndSetToken() {
+      if (typeof actorId !== "string") {
+        const res = await fetch("/generateActorToken", {
+          method: "POST",
+          body: JSON.stringify({
+            user_id: userId, // this is the user ID of the use you're going to impersonate,
+            actor: {
+              sub: actorId, // this is the ID of the impersonator,
+            },
+          }),
+        });
+
+        const data = await res.json();
+
+        setActor(data);
+      }
+    }
+
+    generateAndSetToken();
+  }, []);
+
+  return actor;
+}
+
+function useImpersonatedUser(
+  actorSub: string,
+  setImpersonator: React.Dispatch<React.SetStateAction<string | UserDataJSON>>
+) {
+  React.useEffect(() => {
+    const getImpersonatedUser = async () => {
+      const res = await fetch(`/getImpersonatedUser`, {
+        method: "POST",
+        body: JSON.stringify({
+          impersonator_id: actorSub,
+        }),
+      });
+
+      const data = await res.json();
+
+      setImpersonator(data);
+
+      getImpersonatedUser();
+    };
+  }, [actorSub]);
+}
+
+export default function Page() {
   const [impersonator, setImpersonator] = React.useState<UserDataJSON | string>(
     ""
   );
+  const { signOut, actor } = useAuth();
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const { user } = useUser();
+  const router = useRouter();
+  const { sessions } = useSessionList();
+
+  const actorRes = useImpersonation(actor?.sub || undefined, user?.id);
+  const actorUserData = useImpersonatedUser(actor?.sub || "", setImpersonator);
 
   function extractTicketValue(input: string): string | undefined {
     const index = input.indexOf("ticket=");
@@ -51,25 +116,6 @@ export default function Page() {
     }
   }
 
-  React.useEffect(() => {
-    if (typeof actor?.sub === "string") {
-      const getImpersonatedUser = async () => {
-        const res = await fetch(`/getImpersonatedUser`, {
-          method: "POST",
-          body: JSON.stringify({
-            impersonator_id: actor?.sub,
-          }),
-        });
-
-        const data = await res.json();
-
-        setImpersonator(data);
-      };
-      getImpersonatedUser();
-    }
-  }, [actor]);
-
-  const router = useRouter();
   const onSignOutPress = async (sessionId: string) => {
     try {
       if (isLoaded && sessions && sessions?.length > 0) {
