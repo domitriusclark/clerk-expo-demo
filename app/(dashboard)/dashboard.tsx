@@ -1,13 +1,10 @@
-import { useAuth, useUser } from "@clerk/clerk-expo";
 import React from "react";
-
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Stack } from "expo-router";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
-export default function Page() {
-  const { getToken, signOut } = useAuth();
+export default function Dashboard() {
+  const { signOut } = useAuth();
   const { user } = useUser();
-  const [sessionToken, setSessionToken] = React.useState("");
 
   const onSignOutPress = async () => {
     try {
@@ -15,27 +12,12 @@ export default function Page() {
     } catch (err: any) {}
   };
 
-  React.useEffect(() => {
-    const scheduler = setInterval(async () => {
-      const token = await getToken();
-      setSessionToken(token as string);
-    }, 1000);
-
-    return () => clearInterval(scheduler);
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          title: "Dashboard",
-        }}
-      />
       <Text style={styles.title}>Hello {user?.firstName}</Text>
       <TouchableOpacity onPress={onSignOutPress} style={styles.link}>
         <Text style={styles.linkText}>Sign out</Text>
       </TouchableOpacity>
-      <Text style={styles.token}>{sessionToken}</Text>
     </View>
   );
 }

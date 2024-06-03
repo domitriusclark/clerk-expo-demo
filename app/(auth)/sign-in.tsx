@@ -1,6 +1,6 @@
-import { useClerk, useSignIn } from "@clerk/clerk-expo";
+import { useSignIn } from "@clerk/clerk-expo";
 import { Link, Stack } from "expo-router";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, Button, StyleSheet, View } from "react-native";
 import React from "react";
 import { OAuthButtons } from "@/components/OAuthButtons";
 
@@ -26,54 +26,54 @@ export default function Page() {
   }, [isLoaded, emailAddress, password]);
 
   return (
-    <View>
-      <Stack.Screen
-        options={{
-          title: "Sign In",
-        }}
+    <View style={styles.container}>
+      <OAuthButtons />
+
+      <TextInput
+        autoCapitalize="none"
+        style={styles.input}
+        value={emailAddress}
+        placeholder="Email..."
+        placeholderTextColor="#000"
+        onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
       />
-      <View>
-        <Link href="/">
-          <Text>Home</Text>
-        </Link>
-      </View>
-      <View>
-        <OAuthButtons />
-      </View>
 
-      <View>
-        <TextInput
-          autoCapitalize="none"
-          value={emailAddress}
-          placeholder="Email..."
-          placeholderTextColor="#000"
-          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-        />
-      </View>
+      <TextInput
+        value={password}
+        style={styles.input}
+        placeholder="Password..."
+        placeholderTextColor="#000"
+        secureTextEntry={true}
+        onChangeText={(password) => setPassword(password)}
+      />
 
-      <View>
-        <TextInput
-          value={password}
-          placeholder="Password..."
-          placeholderTextColor="#000"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-      </View>
-
-      <TouchableOpacity onPress={onSignInPress}>
-        <Text>Sign in</Text>
-      </TouchableOpacity>
+      <Button title="Sign In" onPress={onSignInPress} />
 
       <View>
         <Text>Have an account?</Text>
 
-        <Link href="/sign-up" asChild>
-          <TouchableOpacity>
-            <Text>Sign up</Text>
-          </TouchableOpacity>
+        <Link href="/sign-up">
+          <Text>Sign up</Text>
         </Link>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: "75%",
+  },
+});

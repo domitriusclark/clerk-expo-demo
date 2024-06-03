@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Button,
+} from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { OAuthButtons } from "@/components/OAuthButtons";
 import { Link } from "expo-router";
@@ -58,69 +65,73 @@ export default function SignUpScreen() {
   return (
     <View>
       {!pendingVerification && (
-        <View>
-          <View>
-            <Link href="/">
-              <Text>Home</Text>
-            </Link>
-          </View>
-          <View>
-            <OAuthButtons />
-          </View>
-          <View>
-            <TextInput
-              autoCapitalize="none"
-              value={firstName}
-              placeholder="First Name..."
-              onChangeText={(firstName) => setFirstName(firstName)}
-            />
-          </View>
-          <View>
-            <TextInput
-              autoCapitalize="none"
-              value={lastName}
-              placeholder="Last Name..."
-              onChangeText={(lastName) => setLastName(lastName)}
-            />
-          </View>
-          <View>
-            <TextInput
-              autoCapitalize="none"
-              value={emailAddress}
-              placeholder="Email..."
-              onChangeText={(email) => setEmailAddress(email)}
-            />
-          </View>
+        <View style={styles.container}>
+          <OAuthButtons />
 
-          <View>
-            <TextInput
-              value={password}
-              placeholder="Password..."
-              placeholderTextColor="#000"
-              secureTextEntry={true}
-              onChangeText={(password) => setPassword(password)}
-            />
-          </View>
+          <TextInput
+            autoCapitalize="none"
+            value={firstName}
+            style={styles.input}
+            placeholder="First Name..."
+            onChangeText={(firstName) => setFirstName(firstName)}
+          />
 
-          <TouchableOpacity onPress={onSignUpPress}>
-            <Text>Sign up</Text>
-          </TouchableOpacity>
+          <TextInput
+            autoCapitalize="none"
+            style={styles.input}
+            value={lastName}
+            placeholder="Last Name..."
+            onChangeText={(lastName) => setLastName(lastName)}
+          />
+
+          <TextInput
+            autoCapitalize="none"
+            style={styles.input}
+            value={emailAddress}
+            placeholder="Email..."
+            onChangeText={(email) => setEmailAddress(email)}
+          />
+
+          <TextInput
+            value={password}
+            style={styles.input}
+            placeholder="Password..."
+            secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
+          />
+
+          <Button title="Sign Up" onPress={onSignUpPress} />
         </View>
       )}
       {pendingVerification && (
         <View>
-          <View>
-            <TextInput
-              value={code}
-              placeholder="Code..."
-              onChangeText={(code) => setCode(code)}
-            />
-          </View>
-          <TouchableOpacity onPress={onPressVerify}>
-            <Text>Verify Email</Text>
-          </TouchableOpacity>
+          <TextInput
+            value={code}
+            placeholder="Code..."
+            onChangeText={(code) => setCode(code)}
+          />
+
+          <Button title="Verify Email" onPress={onPressVerify} />
         </View>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: "75%",
+  },
+});

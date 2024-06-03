@@ -1,8 +1,10 @@
 import React from "react";
 import * as WebBrowser from "expo-web-browser";
-import { Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { Platform } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import * as Linking from "expo-linking";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -24,13 +26,12 @@ export function OAuthButtons() {
 
   const onPress = React.useCallback(async () => {
     try {
-      const { createdSessionId, signIn, signUp, setActive } =
-        await startOAuthFlow();
+      const { createdSessionId, setActive } = await startOAuthFlow({
+        redirectUrl: Linking.createURL("/dashboard", { scheme: "myapp" }),
+      });
 
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId });
-      } else {
-        // Use signIn or signUp for next steps such as MFA
       }
     } catch (err) {
       console.error("OAuth error", err);
@@ -38,8 +39,22 @@ export function OAuthButtons() {
   }, []);
 
   return (
-    <TouchableOpacity style={{ marginBottom: 20 }} onPress={onPress}>
-      <Text>Continue with Google</Text>
+    <TouchableOpacity style={styles.google} onPress={onPress}>
+      <Text>
+        <AntDesign name="google" size={20} color="black" /> Continue with Google
+      </Text>
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  google: {
+    display: "flex",
+    marginBottom: 10,
+    padding: 10,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 999,
+  },
+});

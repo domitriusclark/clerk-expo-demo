@@ -8,5 +8,10 @@ export default function AuthenticatedLayout() {
     return <Redirect href={"/sign-in"} />;
   }
 
-  return <Stack />;
+  return (
+    <Stack>
+      <Stack.Screen name="dashboard" options={{ title: "Dashboard" }} />
+      <Stack.Screen name="profile" options={{ title: "Profile " }} />
+    </Stack>
+  );
 }
