@@ -1,6 +1,5 @@
 import { Slot } from "expo-router";
 import { tokenCache } from "@/cache";
-import { View } from "react-native";
 
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 

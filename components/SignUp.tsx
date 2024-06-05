@@ -4,7 +4,7 @@ import { useSignUp } from "@clerk/clerk-expo";
 import { OAuthButtons } from "@/components/OAuthButtons";
 import { Link } from "expo-router";
 
-export default function SignUpScreen() {
+export default function SignUp() {
   const { isLoaded, signUp, setActive } = useSignUp();
 
   const [firstName, setFirstName] = React.useState("");

@@ -26,22 +26,22 @@ function useImpersonation(
   const [actor, setActor] = React.useState<Actor>();
   React.useEffect(() => {
     async function generateAndSetToken() {
-      if (typeof actorId !== "string") {
-        const res = await fetch("/generateActorToken", {
-          method: "POST",
-          body: JSON.stringify({
-            user_id: userId, // this is the user ID of the use you're going to impersonate,
-            actor: {
-              sub: actorId, // this is the ID of the impersonator,
-            },
-          }),
-        });
+      // if (typeof actorId === "string" && typeof userId === "string") {
+      const res = await fetch("/generateActorToken", {
+        method: "POST",
+        body: JSON.stringify({
+          user_id: "user_2aqE3TWuC03FDFTEpwXc2QySvqu", // The ID of who you want to impersonate
+          actor: {
+            sub: "user_2WoCG4EvQZHegEd9ILoBsEO2kgm", // The ID of who is impersonating
+          },
+        }),
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        setActor(data);
-      }
+      setActor(data);
     }
+    // }
 
     generateAndSetToken();
   }, []);
@@ -81,7 +81,7 @@ export default function Page() {
   const router = useRouter();
   const { sessions } = useSessionList();
 
-  const actorRes = useImpersonation(actor?.sub || undefined, user?.id);
+  const actorRes = useImpersonation(actor?.sub, user?.id);
   const actorUserData = useImpersonatedUser(actor?.sub || "", setImpersonator);
 
   function extractTicketValue(input: string): string | undefined {
@@ -118,16 +118,19 @@ export default function Page() {
 
   const onSignOutPress = async (sessionId: string) => {
     try {
-      if (isLoaded && sessions && sessions?.length > 0) {
+      if (isLoaded && sessions && sessions?.length > 1) {
         const noActiveSessions = sessions.filter(
           (session) => session.user?.id !== user?.id
         );
+
         await setActive({ session: noActiveSessions[0].id });
       }
       const redirectUrl = Linking.createURL("/dashboard", { scheme: "myapp" });
+
       await signOut({
         sessionId,
       });
+
       router.replace(redirectUrl);
     } catch (err: any) {}
   };
@@ -139,17 +142,20 @@ export default function Page() {
       </Link>
       <Text style={styles.title}>Hello {user?.firstName}</Text>
 
-      {sessions?.map((sesh) => (
-        <TouchableOpacity
-          onPress={() => onSignOutPress(sesh.id)}
-          style={styles.link}
-          key={sesh.id}
-        >
-          <Text style={styles.linkText}>
-            Sign out of {sesh?.user?.primaryEmailAddress?.emailAddress}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      {sessions?.map((sesh) => {
+        console.log(sessions.length);
+        return (
+          <TouchableOpacity
+            onPress={() => onSignOutPress(sesh.id)}
+            style={styles.link}
+            key={sesh.id}
+          >
+            <Text style={styles.linkText}>
+              Sign out of {sesh?.user?.primaryEmailAddress?.emailAddress}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
 
       {actorRes && (
         <Button
