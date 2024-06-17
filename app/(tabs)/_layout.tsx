@@ -16,15 +16,10 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
+          href: isSignedIn ? "/home" : null,
           tabBarIcon: () => (
             <MaterialCommunityIcons name="home-account" size={32} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="auth"
-        options={{
-          href: isSignedIn === true ? null : "/auth/sign-in",
         }}
       />
       <Tabs.Screen

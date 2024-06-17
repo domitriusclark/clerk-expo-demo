@@ -15,10 +15,10 @@ export default function Home() {
       <SignedOut>
         <View style={styles.container}>
           <Text style={styles.title}>Clerk 🤝 Expo</Text>
-          <Link href="/auth/sign-in" style={styles.button}>
+          <Link href="/home/sign-in" style={styles.button}>
             <Text>Sign In</Text>
           </Link>
-          <Link href="/auth/sign-up" style={styles.button}>
+          <Link href="/home/sign-up" style={styles.button}>
             <Text>Sign Up</Text>
           </Link>
         </View>

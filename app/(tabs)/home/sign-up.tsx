@@ -1,18 +1,12 @@
 import * as React from "react";
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Button,
-} from "react-native";
-import { useSignUp } from "@clerk/clerk-expo";
+import { TextInput, View, StyleSheet, Button } from "react-native";
+import { useSignUp, useAuth } from "@clerk/clerk-expo";
 import { OAuthButtons } from "@/components/OAuthButtons";
-import { Link } from "expo-router";
+import { Redirect } from "expo-router";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const { isSignedIn } = useAuth();
 
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -61,6 +55,10 @@ export default function SignUpScreen() {
       console.error(JSON.stringify(err, null, 2));
     }
   };
+
+  if (isSignedIn) {
+    return <Redirect href="/dashboard" />;
+  }
 
   return (
     <View>

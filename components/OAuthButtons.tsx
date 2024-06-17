@@ -3,7 +3,7 @@ import * as WebBrowser from "expo-web-browser";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { Platform } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -41,7 +41,8 @@ export function OAuthButtons() {
   return (
     <TouchableOpacity style={styles.google} onPress={onPress}>
       <Text>
-        <AntDesign name="google" size={20} color="black" /> Continue with Google
+        <MaterialCommunityIcons name="google" size={18} color="black" />{" "}
+        Continue with Google
       </Text>
     </TouchableOpacity>
   );
@@ -51,10 +52,11 @@ const styles = StyleSheet.create({
   google: {
     display: "flex",
     marginBottom: 10,
-    padding: 10,
+    padding: 12,
     alignItems: "center",
     borderWidth: 1,
     borderColor: "black",
     borderRadius: 999,
+    textAlign: "center",
   },
 });

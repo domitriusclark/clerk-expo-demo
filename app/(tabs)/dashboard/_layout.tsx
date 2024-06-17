@@ -5,7 +5,7 @@ export default function DashboardLayout() {
   const { isSignedIn } = useAuth();
 
   if (!isSignedIn) {
-    return <Redirect href={"/auth/sign-in"} />;
+    return <Redirect href={"/home/sign-in"} />;
   }
 
   return <Slot />;
