@@ -1,5 +1,5 @@
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, Stack } from "expo-router";
+import { Link } from "expo-router";
 import { Text, TextInput, Button, StyleSheet, View } from "react-native";
 import React from "react";
 import { OAuthButtons } from "@/components/OAuthButtons";
@@ -52,7 +52,7 @@ export default function Page() {
       <View>
         <Text>Have an account?</Text>
 
-        <Link href="/sign-up">
+        <Link href="/auth/sign-up">
           <Text>Sign up</Text>
         </Link>
       </View>
