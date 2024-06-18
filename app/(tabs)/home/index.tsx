@@ -9,7 +9,18 @@ export default function Home() {
     <View>
       <SignedIn>
         <View style={styles.container}>
-          <Text>{user.user?.emailAddresses[0].emailAddress}</Text>
+          <Text>
+            Welcome,{" "}
+            {user.user?.firstName
+              ? user.user?.firstName
+              : user.user?.emailAddresses[0].emailAddress}
+          </Text>
+          <View style={styles.cards}>
+            <View></View>
+            <View></View>
+            <View></View>
+            <View></View>
+          </View>
         </View>
       </SignedIn>
       <SignedOut>
@@ -49,4 +60,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 8,
   },
+  cards: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 8,
+    height: "80%",
+    width: "90%",
+    borderWidth: 2,
+    borderColor: "rebeccapurple",
+  },
+  card: {},
 });
