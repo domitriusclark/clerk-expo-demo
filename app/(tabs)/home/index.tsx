@@ -16,10 +16,10 @@ export default function Home() {
               : user.user?.emailAddresses[0].emailAddress}
           </Text>
           <View style={styles.cards}>
-            <View></View>
-            <View></View>
-            <View></View>
-            <View></View>
+            <View style={styles.card}></View>
+            <View style={styles.card}></View>
+            <View style={styles.card}></View>
+            <View style={styles.card}></View>
           </View>
         </View>
       </SignedIn>
@@ -62,12 +62,18 @@ const styles = StyleSheet.create({
   },
   cards: {
     display: "flex",
+    flexDirection: "row",
     flexWrap: "wrap",
-    gap: 8,
+    alignContent: "center",
+    justifyContent: "center",
+    gap: 32,
     height: "80%",
-    width: "90%",
-    borderWidth: 2,
-    borderColor: "rebeccapurple",
+    width: "100%",
   },
-  card: {},
+  card: {
+    borderWidth: 2,
+    borderColor: "blue",
+    height: "30%",
+    width: "40%",
+  },
 });
