@@ -21,27 +21,35 @@ export default function SignInMFAForm() {
 
     // Start the sign-in process
     try {
-      await signIn.create({
+      const attemptFirstFactor = await signIn.create({
         identifier: email,
         password,
       });
 
+      if (attemptFirstFactor.status === "complete") {
+        await setActive({ session: attemptFirstFactor.createdSessionId });
+
+        router.replace("/dashboard");
+      } else {
+        console.log(attemptFirstFactor.status);
+      }
+
       // Attempt the TOTP or backup code verification
-      const signInAttempt = await signIn.attemptSecondFactor({
+      const attemptSecondFactor = await signIn.attemptSecondFactor({
         strategy: useBackupCode ? "backup_code" : "totp",
         code: code,
       });
 
       // If verification was completed, set the session to active
       // and redirect the user
-      if (signInAttempt.status === "complete") {
-        await setActive({ session: signInAttempt.createdSessionId });
+      if (attemptSecondFactor.status === "complete") {
+        await setActive({ session: attemptSecondFactor.createdSessionId });
 
         router.replace("/dashboard");
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
-        console.log(signInAttempt);
+        console.log(attemptSecondFactor);
       }
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling

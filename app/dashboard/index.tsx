@@ -163,6 +163,10 @@ export default function Page() {
           onPress={async () => await impersonateUser()}
         />
       )}
+
+      <Link href="/dashboard/account">
+        <Text>MFA Settings</Text>
+      </Link>
     </View>
   );
 }

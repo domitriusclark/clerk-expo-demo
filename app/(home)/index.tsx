@@ -16,7 +16,7 @@ export default function Page() {
 
       <SignedOut>
         <View>
-          <Link href="/auth/sign-in">
+          <Link href="/sign-in">
             <Text>Sign In</Text>
           </Link>
           <Link href="/sign-up">
