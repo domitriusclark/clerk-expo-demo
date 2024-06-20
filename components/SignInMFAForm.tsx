@@ -14,12 +14,9 @@ export default function SignInMFAForm() {
   const [displayTOTP, setDisplayTOTP] = React.useState(false);
   const router = useRouter();
 
-  const handleFirstStage = () => setDisplayTOTP(true);
-
-  const onPressTOTP = React.useCallback(async () => {
+  const handleFirstStage = async () => {
     if (!isLoaded) return;
 
-    // Start the sign-in process
     try {
       const attemptFirstFactor = await signIn.create({
         identifier: email,
@@ -28,35 +25,45 @@ export default function SignInMFAForm() {
 
       if (attemptFirstFactor.status === "complete") {
         await setActive({ session: attemptFirstFactor.createdSessionId });
-
         router.replace("/dashboard");
+      } else if (attemptFirstFactor.status === "needs_second_factor") {
+        setDisplayTOTP(true);
       } else {
-        console.log(attemptFirstFactor.status);
+        console.error(JSON.stringify(attemptFirstFactor, null, 2));
       }
-
-      // Attempt the TOTP or backup code verification
-      const attemptSecondFactor = await signIn.attemptSecondFactor({
-        strategy: useBackupCode ? "backup_code" : "totp",
-        code: code,
-      });
-
-      // If verification was completed, set the session to active
-      // and redirect the user
-      if (attemptSecondFactor.status === "complete") {
-        await setActive({ session: attemptSecondFactor.createdSessionId });
-
-        router.replace("/dashboard");
-      } else {
-        // If the status is not complete, check why. User may need to
-        // complete further steps.
-        console.log(attemptSecondFactor);
-      }
-    } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.log(err);
+    } catch (err) {
+      console.error(JSON.stringify(err, null, 2));
     }
-  }, [isLoaded, email, password, code, useBackupCode]);
+  };
+
+  const onPressTOTP = React.useCallback(async () => {
+    if (!isLoaded) return;
+
+    // try {
+    //   // Attempt the TOTP or backup code verification
+    //   const attemptSecondFactor = await signIn.attemptSecondFactor({
+    //     strategy: useBackupCode ? "backup_code" : "totp",
+    //     code: code,
+    //   });
+
+    //   // If verification was completed, set the session to active
+    //   // and redirect the user
+    //   if (attemptSecondFactor.status === "complete") {
+    //     await setActive({ session: attemptSecondFactor.createdSessionId });
+
+    //     router.replace("/dashboard");
+    //   } else {
+    //     // If the status is not complete, check why. User may need to
+    //     // complete further steps.
+    //     console.log(attemptSecondFactor);
+    //   }
+    // } catch (err: any) {
+    //   // See https://clerk.com/docs/custom-flows/error-handling
+    //   // for more info on error handling
+    //   console.log(err);
+    // }
+  }, []);
+  // isLoaded, email, password, code, useBackupCode
 
   if (displayTOTP) {
     return (
