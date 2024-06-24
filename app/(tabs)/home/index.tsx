@@ -26,10 +26,10 @@ export default function Home() {
       <SignedOut>
         <View style={styles.container}>
           <Text style={styles.title}>Clerk 🤝 Expo</Text>
-          <Link href="/home/sign-in" style={styles.button}>
+          <Link href="/sign-in" style={styles.button}>
             <Text>Sign In</Text>
           </Link>
-          <Link href="/home/sign-up" style={styles.button}>
+          <Link href="/sign-up" style={styles.button}>
             <Text>Sign Up</Text>
           </Link>
         </View>
@@ -66,14 +66,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignContent: "center",
     justifyContent: "center",
-    gap: 32,
+    gap: 12,
     height: "80%",
     width: "100%",
   },
   card: {
     borderWidth: 2,
     borderColor: "blue",
-    height: "30%",
-    width: "40%",
+    borderRadius: 8,
+    height: "45%",
+    width: "45%",
   },
 });

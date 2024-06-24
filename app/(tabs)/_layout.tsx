@@ -31,13 +31,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="account"
-        options={{
-          href: isSignedIn === true ? "/account" : null,
-          tabBarIcon: () => <MaterialCommunityIcons name="account" size={32} />,
-        }}
-      />
     </Tabs>
   );
 }

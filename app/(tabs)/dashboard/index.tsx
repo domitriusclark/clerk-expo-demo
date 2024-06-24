@@ -1,30 +1,24 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useAuth, useUser } from "@clerk/clerk-expo";
+import { StyleSheet, Text, View } from "react-native";
+import { useUser } from "@clerk/clerk-expo";
+import SignOutButton from "@/components/SignOutButton";
 
 export default function Dashboard() {
-  const { signOut } = useAuth();
   const { user } = useUser();
-
-  const onSignOutPress = async () => {
-    try {
-      await signOut();
-    } catch (err: any) {}
-  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hello {user?.firstName}</Text>
-      <TouchableOpacity onPress={onSignOutPress} style={styles.link}>
-        <Text style={styles.linkText}>Sign out</Text>
-      </TouchableOpacity>
+      <SignOutButton />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
     flex: 1,
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
