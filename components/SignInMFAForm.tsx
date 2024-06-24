@@ -39,31 +39,30 @@ export default function SignInMFAForm() {
   const onPressTOTP = React.useCallback(async () => {
     if (!isLoaded) return;
 
-    // try {
-    //   // Attempt the TOTP or backup code verification
-    //   const attemptSecondFactor = await signIn.attemptSecondFactor({
-    //     strategy: useBackupCode ? "backup_code" : "totp",
-    //     code: code,
-    //   });
+    try {
+      // Attempt the TOTP or backup code verification
+      const attemptSecondFactor = await signIn.attemptSecondFactor({
+        strategy: useBackupCode ? "backup_code" : "totp",
+        code: code,
+      });
 
-    //   // If verification was completed, set the session to active
-    //   // and redirect the user
-    //   if (attemptSecondFactor.status === "complete") {
-    //     await setActive({ session: attemptSecondFactor.createdSessionId });
+      // If verification was completed, set the session to active
+      // and redirect the user
+      if (attemptSecondFactor.status === "complete") {
+        await setActive({ session: attemptSecondFactor.createdSessionId });
 
-    //     router.replace("/dashboard");
-    //   } else {
-    //     // If the status is not complete, check why. User may need to
-    //     // complete further steps.
-    //     console.log(attemptSecondFactor);
-    //   }
-    // } catch (err: any) {
-    //   // See https://clerk.com/docs/custom-flows/error-handling
-    //   // for more info on error handling
-    //   console.log(err);
-    // }
-  }, []);
-  // isLoaded, email, password, code, useBackupCode
+        router.replace("/dashboard");
+      } else {
+        // If the status is not complete, check why. User may need to
+        // complete further steps.
+        console.log(attemptSecondFactor);
+      }
+    } catch (err: any) {
+      // See https://clerk.com/docs/custom-flows/error-handling
+      // for more info on error handling
+      console.log(err);
+    }
+  }, [isLoaded, email, password, code, useBackupCode]);
 
   if (displayTOTP) {
     return (
