@@ -12,6 +12,7 @@ import { tokenCache } from "@/cache";
 import { Text } from "react-native";
 
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export {
   // Catch any errors thrown by the Layout component.
