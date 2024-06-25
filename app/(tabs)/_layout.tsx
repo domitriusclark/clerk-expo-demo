@@ -25,7 +25,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="dashboard"
         options={{
-          href: isSignedIn === true ? "/dashboard" : null,
+          href: isSignedIn === true ? "/dashboard/(tabs)" : null,
           tabBarIcon: () => (
             <MaterialCommunityIcons name="view-dashboard" size={32} />
           ),
