@@ -1,4 +1,4 @@
-import { Button } from "react-native";
+import { Text, Pressable } from "react-native";
 import { useAuth } from "@clerk/clerk-expo";
 
 export default function SignOutButton() {
@@ -6,9 +6,23 @@ export default function SignOutButton() {
 
   const onSignOutPress = async () => {
     try {
-      await signOut();
+      await signOut({ redirectUrl: "/home" });
     } catch (err: any) {}
   };
 
-  return <Button onPress={onSignOutPress} title="Sign out" />;
+  return (
+    <Pressable
+      style={{
+        borderRadius: 8,
+        backgroundColor: "red",
+        padding: 12,
+        marginTop: 8,
+      }}
+      onPress={onSignOutPress}
+    >
+      <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
+        Sign out
+      </Text>
+    </Pressable>
+  );
 }

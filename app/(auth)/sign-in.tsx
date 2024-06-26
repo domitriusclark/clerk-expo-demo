@@ -7,6 +7,11 @@ import { OAuthButtons } from "@/components/OAuthButtons";
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const { isSignedIn } = useAuth();
+  const router = useRouter();
+
+  if (isSignedIn) {
+    return <Redirect href="/home" />;
+  }
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -23,12 +28,9 @@ export default function Page() {
       });
 
       await setActive({ session: completeSignIn.createdSessionId });
+      router.replace("/home");
     } catch (err: any) {}
   }, [isLoaded, emailAddress, password]);
-
-  if (isSignedIn) {
-    return <Redirect href="/dashboard" />;
-  }
 
   return (
     <View style={styles.container}>

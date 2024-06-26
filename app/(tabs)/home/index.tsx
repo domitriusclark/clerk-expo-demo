@@ -1,12 +1,12 @@
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function Home() {
   const user = useUser();
 
   return (
-    <SafeAreaView>
+    <>
       <SignedIn>
         <View style={styles.container}>
           <Text>
@@ -25,7 +25,6 @@ export default function Home() {
       </SignedIn>
       <SignedOut>
         <View style={styles.container}>
-          <Text style={styles.title}>Clerk 🤝 Expo</Text>
           <Link href="/sign-in" style={styles.button}>
             <Text>Sign In</Text>
           </Link>
@@ -34,7 +33,7 @@ export default function Home() {
           </Link>
         </View>
       </SignedOut>
-    </SafeAreaView>
+    </>
   );
 }
 

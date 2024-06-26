@@ -3,16 +3,12 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import {
-  Stack,
-  useGlobalSearchParams,
-  useLocalSearchParams,
-} from "expo-router";
+import { Stack } from "expo-router";
 import { tokenCache } from "@/cache";
-import { Text } from "react-native";
 
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { SafeAreaView } from "react-native-safe-area-context";
+import HeaderImage from "@/components/HeaderImage";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -28,21 +24,25 @@ function RootLayoutNav() {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-              title: "Home",
-            }}
-          />
-          <Stack.Screen
-            name="(auth)"
-            options={{
-              headerTitle: "",
-            }}
-          />
-        </Stack>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Stack>
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                title: "Clerk + Expo",
+                headerLeft: () => <HeaderImage />,
+                headerShadowVisible: false,
+                headerBackTitle: "BACK",
+              }}
+            />
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                headerTitle: "",
+              }}
+            />
+          </Stack>
+        </SafeAreaView>
       </ClerkLoaded>
     </ClerkProvider>
   );
