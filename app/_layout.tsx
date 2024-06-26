@@ -32,7 +32,6 @@ function RootLayoutNav() {
                 title: "Clerk + Expo",
                 headerLeft: () => <HeaderImage />,
                 headerShadowVisible: false,
-                headerBackTitle: "BACK",
               }}
             />
             <Stack.Screen

@@ -5,7 +5,7 @@ export default function AuthScreenLayout() {
   const { isSignedIn } = useAuth();
 
   if (isSignedIn) {
-    return <Redirect href="/dashboard/(tabs)" />;
+    return <Redirect href="/home" />;
   }
 
   return (

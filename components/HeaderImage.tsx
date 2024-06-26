@@ -6,7 +6,7 @@ export default function HeaderImage() {
   const { user } = useUser();
   return (
     <SignedIn>
-      <Link href="/dashboard/(tabs)" style={{}}>
+      <Link href="/home" style={{}}>
         <Image
           src={user?.imageUrl}
           style={{
