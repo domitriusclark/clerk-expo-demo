@@ -1,5 +1,7 @@
-import { Text } from "react-native";
+import Scrollable from "@/components/Scrollable";
+import { useSession } from "@clerk/clerk-expo";
 
 export default function Session() {
-  return <Text>Session Screen</Text>;
+  const { session } = useSession();
+  return <Scrollable headerTitle="Session Data:" data={session} />;
 }

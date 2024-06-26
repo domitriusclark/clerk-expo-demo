@@ -8,6 +8,7 @@ import { tokenCache } from "@/cache";
 
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { SafeAreaView } from "react-native-safe-area-context";
+import HeaderImage from "@/components/HeaderImage";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -28,8 +29,10 @@ function RootLayoutNav() {
             <Stack.Screen
               name="(tabs)"
               options={{
-                headerShown: false,
-                title: "Home",
+                title: "Clerk + Expo",
+                headerLeft: () => <HeaderImage />,
+                headerShadowVisible: false,
+                headerBackTitle: "BACK",
               }}
             />
             <Stack.Screen

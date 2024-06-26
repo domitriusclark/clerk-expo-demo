@@ -18,5 +18,14 @@ export const MaterialTopTabs = withLayoutContext<
 >(Navigator);
 
 export default function Layout() {
-  return <MaterialTopTabs />;
+  return (
+    <MaterialTopTabs>
+      <MaterialTopTabs.Screen name="index" options={{ title: "Profile" }} />
+      <MaterialTopTabs.Screen name="user-details" options={{ title: "User" }} />
+      <MaterialTopTabs.Screen
+        name="session-details"
+        options={{ title: "Session" }}
+      />
+    </MaterialTopTabs>
+  );
 }

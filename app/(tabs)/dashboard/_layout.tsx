@@ -1,5 +1,5 @@
 import { Redirect, Stack } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 export default function DashboardLayout() {
   const { isSignedIn } = useAuth();
@@ -9,7 +9,12 @@ export default function DashboardLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack
+      screenOptions={{
+        title: "",
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name="(tabs)" />
     </Stack>
   );

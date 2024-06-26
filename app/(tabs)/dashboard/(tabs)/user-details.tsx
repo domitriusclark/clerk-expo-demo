@@ -1,5 +1,7 @@
-import { Text } from "react-native";
+import Scrollable from "@/components/Scrollable";
+import { useUser } from "@clerk/clerk-expo";
 
 export default function UserDetails() {
-  return <Text>User Details Screen</Text>;
+  const { user } = useUser();
+  return <Scrollable headerTitle="User details:" data={user} />;
 }
