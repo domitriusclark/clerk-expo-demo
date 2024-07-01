@@ -8,8 +8,6 @@ export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const { isSignedIn } = useAuth();
 
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
@@ -23,8 +21,6 @@ export default function SignUpScreen() {
 
     try {
       await signUp.create({
-        firstName,
-        lastName,
         emailAddress,
         password,
       });
@@ -65,22 +61,6 @@ export default function SignUpScreen() {
       {!pendingVerification && (
         <View style={styles.container}>
           <OAuthButtons />
-
-          <TextInput
-            autoCapitalize="none"
-            value={firstName}
-            style={styles.input}
-            placeholder="First Name..."
-            onChangeText={(firstName) => setFirstName(firstName)}
-          />
-
-          <TextInput
-            autoCapitalize="none"
-            style={styles.input}
-            value={lastName}
-            placeholder="Last Name..."
-            onChangeText={(lastName) => setLastName(lastName)}
-          />
 
           <TextInput
             autoCapitalize="none"

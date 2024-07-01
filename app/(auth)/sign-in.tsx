@@ -1,17 +1,12 @@
-import { useAuth, useSignIn } from "@clerk/clerk-expo";
-import { Link, Redirect, useRouter } from "expo-router";
+import { useSignIn } from "@clerk/clerk-expo";
+import { Link, useRouter } from "expo-router";
 import { Text, TextInput, Button, StyleSheet, View } from "react-native";
 import React from "react";
 import { OAuthButtons } from "@/components/OAuthButtons";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
-  const { isSignedIn } = useAuth();
   const router = useRouter();
-
-  if (isSignedIn) {
-    return <Redirect href="/home" />;
-  }
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
