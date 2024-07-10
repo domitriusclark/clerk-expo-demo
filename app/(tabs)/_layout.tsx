@@ -1,9 +1,14 @@
 import { useAuth } from "@clerk/clerk-expo";
-import { Tabs } from "expo-router";
+import { Tabs, Redirect } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function TabsLayout() {
   const { isSignedIn } = useAuth();
+
+  if (!isSignedIn) {
+    return <Redirect href="/sign-in" />;
+  }
+
   return (
     <Tabs
       screenOptions={{

@@ -3,5 +3,5 @@ import { useUser } from "@clerk/clerk-expo";
 
 export default function UserDetails() {
   const { user } = useUser();
-  return <Scrollable headerTitle="User details:" data={user} />;
+  return <Scrollable data={user} />;
 }
